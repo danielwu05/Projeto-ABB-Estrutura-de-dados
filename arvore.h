@@ -9,9 +9,9 @@
 
 #define COUNT 5 // remover dps иж teste
 /*
-int VaziaArvore (Raiz * arvore) - retorna 1 se for nulo e 0 se nao for o caso
-Raiz* RemoveArvore (Raiz* arvore) - remove a arvore inteira
-Arvore * encontraMenor (Arvore* arvore) - encontra o menor valor da raiz e retorna o seu endereco
+int VaziaArvore (Raiz * arvore)// - retorna 1 se for nulo e 0 se nao for o caso
+Raiz* RemoveArvore (Raiz* arvore)// - remove a arvore inteira
+Arvore * encontraMenor (Arvore* arvore)// /- encontra o menor valor da raiz e retorna o seu endereco
 Arvore* RemoveGalho (Arvore* arvore, int achar) - remove o no da arvore contendo o valor procurado
 Arvore* InsereArvore (Arvore* root, int info) - insere no na arvore
 
@@ -46,7 +46,7 @@ int VaziaArvore (Raiz * arvore) {
 int generateRandomValue(int option) {
     srand(time(NULL));
     if(option % 2 == 0){
-        return (rand()%(1000 - 9999));
+        return (rand()%(1000 - 9999)+1000);
     }
     else{
         return (rand()%(0 - 9));
@@ -58,13 +58,13 @@ int BuscarArvore (Arvore* root, int info) {
     if (root == NULL) {
         return 0;
     }
-    if (root -> data == info) {
+    if (root -> id == info) {
         return 1;
     }
-    if (info > root -> data) {
+    if (info > root -> id) {
         return BuscarArvore(root->right, info);
     }
-    else if (info < root -> data) {
+    else if (info < root -> id) {
         return BuscarArvore(root->left, info);
     }
 }
@@ -148,17 +148,6 @@ int quantidadeNos (Arvore* arvore, int contagem) {
         return contagem;
 }
 
-int alturaArvore(Arvore *arvore){
-        if (arvore == NULL) {
-            return  -1;
-        }
-        else {
-            int direita = alturaArvore(arvore->right);
-            int esquerda = alturaArvore(arvore->left);
-            direita = (direita > esquerda) ? direita : esquerda;
-            return 1+ direita;
-        }
-}
 Arvore* InsereArvore (Arvore* root, int id, char cliente, char vendedor, int matricula, int data, int mes, int ano, float valor) {
     system("cls");
     if (root == NULL) {
@@ -182,20 +171,59 @@ Arvore* InsereArvore (Arvore* root, int id, char cliente, char vendedor, int mat
         }
     return root;
 }
-// teste remover depois
-void print2DUtil(Arvore* root, int space) {
-    if (root == NULL)
-        return;
-    space += COUNT;
-    print2DUtil(root->right, space);
-    printf("\n");
-    for (int i = COUNT; i < space; i++)
-        printf(" ");
-    printf("%d\n", root->data);
-    print2DUtil(root->left, space);
+
+void imprimeNo(Arvore * arvore){
+    printf("%d | %s | V%d | %s | %2d/%2d/%d | %.2f", arvore->id, arvore->vendedor, arvore->cliente, arvore->data, arvore->mes, arvore->ano, arvore->valor);
 }
-void print2D(Arvore* root) {
-    print2DUtil(root, 0);
+
+void imprimeVendas(Arvore * arvore){
+    printf("%d | %s | %2d/%2d/%d | %.2f", arvore->id, arvore->vendedor, arvore->data, arvore->mes, arvore->ano, arvore->valor);
 }
+
+void imprimeAcimaouAbaixo(Arvore *arvore, float valor, int o){
+    if(o%2 == 1){ //maior que o valor
+            if(valor>arvore->valor){
+                imprimeNo(arvore);
+            }
+    }
+    else{ //menor que o valor
+            if(valor<arvore->valor){
+                imprimeNo(arvore);
+            }
+    }
+    imprimeAcimaouAbaixo(arvore->left, valor, o);
+    imprimeAcimaouAbaixo(arvore->right, valor, o);
+}
+
+void imprimearvoreOrder(Arvore *arvore, int o){
+        if(o%2==1){
+            imprimearvoreOrder(arvore->left,o);
+            imprimeNo(arvore);
+            imprimearvoreOrder(arvore->right,o);
+        }
+        else{
+            imprimearvoreOrder(arvore->right,o);
+            imprimeNo(arvore);
+            imprimearvoreOrder(arvore->left,o);
+        }
+}
+//tirar e coloca na main depois
+void imprimeArvore(Arvore * arvore){
+    int opt;
+    do{
+        printf("\nCrescente [1] ou Decrescente [2]?: ");
+        scanf("%d",&opt);
+        if(opt == 1) {
+            imprimearvoreOrder(arvore, opt);
+        }
+        else if(opt == 2) {
+             imprimearvoreOrder(arvore, opt);
+        }
+        else {
+            printf("\nValor inserido invalido\n");
+        }
+    }while(opt < 0 || opt >2);
+}
+
 
 #endif // ARVORE_H_INCLUDED
