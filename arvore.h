@@ -7,222 +7,269 @@
 #include <string.h>
 #include <time.h>
 
-#define COUNT 5 // remover dps �� teste
-/*
-int VaziaArvore (Raiz * arvore)// - retorna 1 se for nulo e 0 se nao for o caso
-Raiz* RemoveArvore (Raiz* arvore)// - remove a arvore inteira
-Arvore * encontraMenor (Arvore* arvore)// /- encontra o menor valor da raiz e retorna o seu endereco
-Arvore* RemoveGalho (Arvore* arvore, int achar) - remove o no da arvore contendo o valor procurado
-Arvore* InsereArvore (Arvore* root, int info) - insere no na arvore
 
+typedef struct data {
+    int dia;
+    int mes;
+    int ano;
+} Data;
 
-*/
-
-
-typedef struct Tree {
+typedef struct dados
+{
     int id;
     char cliente[50];
     char vendedor[50];
-    int matricula;
-    int data, mes, ano;
+    char matricula[4];
+    Data data;
     float valor;
-    struct Tree* left;
-    struct Tree* right;
-}Arvore;
+}Dados;
 
-typedef struct Root {
-    struct Tree * root;
-}Raiz;
-Raiz* IniciaArvore () {
-    return NULL;
+typedef struct NoArvore {
+    Dados info;
+    struct NoArvore* left;
+    struct NoArvore* right;
+} NoArvore;
+
+typedef struct Arvore {
+    struct NoArvore *raiz;
+} Arvore;
+
+
+Arvore* IniciaArvore() {
+    Arvore* novaArvore = (Arvore*)malloc(sizeof(Arvore));
+    if (novaArvore != NULL) {
+        novaArvore->raiz = NULL;
+    }
+    return novaArvore;
 }
-int VaziaArvore (Raiz * arvore) {
-    if (arvore -> root == NULL) {
+
+int VaziaArvore(Arvore* arvore) {
+    if (arvore->raiz == NULL) {
         return 1;
     }
     return 0;
 }
 
-int generateRandomValue(int option) {
-    srand(time(NULL));
-    if(option % 2 == 0){
-        return (rand()%(1000 - 9999)+1000);
-    }
-    else{
-        return (rand()%(0 - 9));
-    }
-
+void gerarMatricula(char* matricula) {
+    matricula[0] = 'V';
+    matricula[1] = '0' + (rand() % 10);
+    matricula[2] = '0' + (rand() % 10);
+    matricula[3] = '0' + (rand() % 10);
+    matricula[4] = '\0';
 }
 
-int BuscarArvore (Arvore* root, int info) {
+int generateRandomID()
+{
+    return (rand() % (9999 - 1000 + 1)) + 1000;
+}
+
+int BuscarArvore(NoArvore* root, int info) {
     if (root == NULL) {
         return 0;
     }
-    if (root -> id == info) {
+    if (root->info.id == info) {
         return 1;
     }
-    if (info > root -> id) {
+    if (info > root->info.id) {
         return BuscarArvore(root->right, info);
     }
-    else if (info < root -> id) {
+    else {
         return BuscarArvore(root->left, info);
     }
 }
 
-Arvore * encontraMenor (Arvore* arvore) {
-    if (arvore == NULL) {
+NoArvore* encontraMaior(NoArvore* no) {
+    if (no == NULL) {
         return NULL;
     }
-    while (arvore -> left != NULL) {
-        arvore = arvore -> left;
+    while (no->right != NULL) {
+        no = no->right;
     }
-    return arvore;
+    return no;
 }
-Arvore* RemoveGalho (Arvore* arvore, int achar) {
-    int aux;
-    system("cls");
-    if (arvore == NULL) {
-        printf("\n n existe\n");
+
+NoArvore* RemoveGalho(NoArvore* no, int achar) {
+
+    if (no == NULL)
+    {
         return NULL;
+    }
+
+    if (achar < no->info.id) {
+        no->left = RemoveGalho(no->left, achar);
+    }
+    else if (achar > no->info.id) {
+        no->right = RemoveGalho(no->right, achar);
     }
     else {
-        if (arvore -> data < achar) {
-            arvore -> right = RemoveGalho(arvore -> right, achar);
+        if (no->left == NULL && no->right == NULL) {
+            free(no);
+            printf("\nRemovido com sucesso\n");
+            return NULL;
         }
-        else if (arvore -> data > achar) {
-            arvore -> left = RemoveGalho(arvore -> left, achar);
+        else if (no->left == NULL) {
+            NoArvore* temp = no->right;
+            free(no);
+            printf("\nRemovido com sucesso\n");
+            return temp;
         }
-        else{
-            if (arvore -> left == NULL && arvore -> right == NULL) {
-                free (arvore);
-                printf("\nremovido c/ sucesso\n");
-                return NULL;
-            }
-            else if (arvore -> left == NULL) {
-                Arvore *aux = arvore -> right;
-                free (arvore);
-                printf("\nremovido c/ sucesso\n");
-                return aux;
-            }
-            else if (arvore -> right == NULL) {
-                Arvore *aux = arvore -> left;
-                free (arvore);
-                printf("\nremovido c/ sucesso\n");
-                return aux;
-            }
-            else {
-                Arvore *aux = encontraMenor(arvore -> right);
-                arvore -> data = aux -> data;
-                arvore -> right = RemoveGalho(arvore -> right , aux -> data);
-            }
+        else if (no->right == NULL) {
+            NoArvore* temp = no->left;
+            free(no);
+            printf("\nRemovido com sucesso\n");
+            return temp;
         }
-        return arvore;
+        else {
+            NoArvore* aux = encontraMaior(no->left);
+            no->info.id = aux->info.id;
+            no->info.data = aux->info.data;
+            no->left = RemoveGalho(no->left, aux->info.id);
+        }
     }
+    return no;
 }
-void LiberaArvore (Arvore* arvore) {
-    LiberaArvore(arvore -> left);
-    LiberaArvore(arvore -> right);
-    free(arvore);
+
+void LiberaNos(NoArvore* no)
+{
+        if(no->right != NULL)
+        {
+            LiberaNos(no->right);
+        }
+        if(no->left != NULL)
+    {
+        LiberaNos(no->left);
+    }
+        free(no);
 }
-Raiz* RemoveArvore (Raiz* arvore) {
+
+Arvore* RemoveArvore(Arvore* arvore) {
     if (arvore == NULL) {
         return NULL;
     }
-    LiberaArvore(arvore -> root);
+
+    LiberaNos(arvore->raiz);
     free(arvore);
     return NULL;
 }
-int quantidadeNos (Arvore* arvore, int contagem) {
-        if (arvore!=NULL){
+
+int quantidadeNos (NoArvore* no, int contagem) {
+        if (no!=NULL)
+        {
             contagem++;
-            if (arvore -> left == NULL && arvore -> right == NULL) {
+            if (no -> left == NULL && no -> right == NULL) {
                 return contagem;
             }
-            if (arvore -> left != NULL) {
-                contagem = quantidadeNos(arvore -> left, contagem);
+            if (no -> left != NULL) {
+                contagem = quantidadeNos(no -> left, contagem);
             }
-            if (arvore -> right != NULL) {
-                contagem = quantidadeNos(arvore -> right, contagem);
+            if (no -> right != NULL) {
+                contagem = quantidadeNos(no -> right, contagem);
             }
         }
         return contagem;
 }
 
-Arvore* InsereArvore (Arvore* root, int id, char cliente, char vendedor, int matricula, int data, int mes, int ano, float valor) {
-    system("cls");
-    if (root == NULL) {
-        Arvore * NovoNo = (Arvore*) malloc (sizeof(Arvore));
-        NovoNo -> id = id;
-        strcpy(NovoNo -> cliente,&cliente);
-        strcpy(NovoNo -> vendedor,&vendedor);
-        NovoNo -> data = data;
-        NovoNo -> mes = mes;
-        NovoNo -> ano = ano;
+NoArvore* InsereArvore(NoArvore* root, int id, char* cliente, char* vendedor, char* matricula, Data data, float valor)
+{
+if (root == NULL)
+    {
+        NoArvore* NovoNo = (NoArvore*)malloc(sizeof(NoArvore));
+        if (NovoNo == NULL)
+    {
+            return NULL;
+    }
 
-        NovoNo -> left = NovoNo -> right = NULL;
-        printf("\ninserido c/ sucesso\n");
+        NovoNo->info.id = id;
+        strcpy(NovoNo->info.cliente, cliente);
+        strcpy(NovoNo->info.vendedor, vendedor);
+        strcpy(NovoNo->info.matricula, matricula);
+        NovoNo->info.data = data;
+        NovoNo->info.valor = valor;
+
+        NovoNo->left = NULL;
+        NovoNo->right = NULL;
+
+        printf("\nVenda ID %d inserida com sucesso.\n", id);
         return NovoNo;
     }
-        if (id > root -> id) {
-            root -> right = InsereArvore(root, id, cliente, vendedor, matricula, data, mes, ano, valor);
-        }
-        else if (id < root -> id) {
-            root -> left = InsereArvore(root, id, cliente, vendedor, matricula, data, mes, ano, valor);
-        }
+
+    if (id < root->info.id) {
+        root->left = InsereArvore(root->left, id, cliente, vendedor, matricula, data, valor);
+    }
+    else if (id > root->info.id) {
+        root->right = InsereArvore(root->right, id, cliente, vendedor, matricula, data, valor);
+    }
+
     return root;
 }
 
-void imprimeNo(Arvore * arvore){
-    printf("%d | %s | V%d | %s | %2d/%2d/%d | %.2f", arvore->id, arvore->vendedor, arvore->cliente, arvore->data, arvore->mes, arvore->ano, arvore->valor);
+void imprimeNo(NoArvore* no) {
+    printf("%d | %s | %s | %s | %02d/%02d/%d | R$ %.2f\n",no->info.id, no->info.vendedor, no->info.matricula,no->info.cliente, no->info.data.dia, no->info.data.mes,no->info.data.ano, no->info.valor);
 }
 
-void imprimeVendas(Arvore * arvore){
-    printf("%d | %s | %2d/%2d/%d | %.2f", arvore->id, arvore->vendedor, arvore->data, arvore->mes, arvore->ano, arvore->valor);
+void imprimeVendas(NoArvore* no) {
+    printf("%d | %s | %02d/%02d/%d | R$ %.2f\n",
+           no->info.id, no->info.cliente, no->info.data.dia,
+           no->info.data.mes, no->info.data.ano, no->info.valor);
 }
 
-void imprimeAcimaouAbaixo(Arvore *arvore, float valor, int o){
-    if(o%2 == 1){ //maior que o valor
-            if(valor>arvore->valor){
-                imprimeNo(arvore);
-            }
+void imprimeAcimaouAbaixo(NoArvore* no, float valor, int o) {
+
+    imprimeAcimaouAbaixo(no->left, valor, o);
+
+    if (o == 1 && no->info.valor > valor) {
+        imprimeNo(no);
     }
-    else{ //menor que o valor
-            if(valor<arvore->valor){
-                imprimeNo(arvore);
-            }
+    else if (o == 2 && no->info.valor < valor) {
+        imprimeNo(no);
     }
-    imprimeAcimaouAbaixo(arvore->left, valor, o);
-    imprimeAcimaouAbaixo(arvore->right, valor, o);
+
+    imprimeAcimaouAbaixo(no->right, valor, o);
 }
 
-void imprimearvoreOrder(Arvore *arvore, int o){
-        if(o%2==1){
-            imprimearvoreOrder(arvore->left,o);
-            imprimeNo(arvore);
-            imprimearvoreOrder(arvore->right,o);
-        }
-        else{
-            imprimearvoreOrder(arvore->right,o);
-            imprimeNo(arvore);
-            imprimearvoreOrder(arvore->left,o);
-        }
+void imprimearvoreOrder(NoArvore* no, int o) {
+
+    if (o == 1) {
+        imprimearvoreOrder(no->left, o);
+        imprimeNo(no);
+        imprimearvoreOrder(no->right, o);
+    }
+    else {
+        imprimearvoreOrder(no->right, o);
+        imprimeNo(no);
+        imprimearvoreOrder(no->left, o);
+    }
 }
-//tirar e coloca na main depois
-void imprimeArvore(Arvore * arvore){
+
+void imprimeArvore(Arvore* arvore) {
+
     int opt;
-    do{
+    do {
         printf("\nCrescente [1] ou Decrescente [2]?: ");
-        scanf("%d",&opt);
-        if(opt == 1) {
-            imprimearvoreOrder(arvore, opt);
+        scanf("%d", &opt);
+        if (opt == 1) {
+            printf("\nID | Vendedor | Matrícula | Cliente | Data de Transação | Valor(R$)\n");
+            printf("-------------------------------------------------------------------\n");
+            imprimearvoreOrder(arvore->raiz, opt);
         }
-        else if(opt == 2) {
-             imprimearvoreOrder(arvore, opt);
+        else if (opt == 2) {
+            printf("\nID | Vendedor | Matrícula | Cliente | Data de Transação | Valor(R$)\n");
+            printf("-------------------------------------------------------------------\n");
+            imprimearvoreOrder(arvore->raiz, opt);
         }
         else {
-            printf("\nValor inserido invalido\n");
+            printf("\nValor inserido inválido\n");
         }
-    }while(opt < 0 || opt >2);
+    } while (opt < 1 || opt > 2);
+}
+
+float somaValores(NoArvore* raiz)
+{
+    if (raiz == NULL)
+    {
+        return 0;
+    }
+    return raiz->info.valor + somaValores(raiz->left) + somaValores(raiz->right); // fiz essa funçao de somar recursivamente ;
 }
 
 
