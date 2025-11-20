@@ -130,11 +130,6 @@ NoArvore* RemoveGalho(NoArvore* no, int achar) {
 
 void LiberaNos(NoArvore* no)
 {
-    if(no == NULL)
-    {
-
-    }
-
         if(no->right != NULL)
         {
             LiberaNos(no->right);
