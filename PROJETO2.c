@@ -169,7 +169,7 @@ void estatisticas(Arvore *arvore)
 }
 
     else{
-        printf("Não ha venda registrada no momento");
+        printf("NÃ£o ha venda registrada no momento");
     }
 
 }
@@ -245,7 +245,7 @@ int main() {
                 arvore = removerVenda(arvore);
                 break;
             case 7:
-                LiberaNos(arvore->raiz);
+                RemoveArvore(arvore);
                 break;
             default:
                 printf("\nOpcao invalida!\n");
