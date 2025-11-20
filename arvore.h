@@ -130,6 +130,11 @@ NoArvore* RemoveGalho(NoArvore* no, int achar) {
 
 void LiberaNos(NoArvore* no)
 {
+    if(no == NULL)
+    {
+
+    }
+
         if(no->right != NULL)
         {
             LiberaNos(no->right);
@@ -142,7 +147,8 @@ void LiberaNos(NoArvore* no)
 }
 
 Arvore* RemoveArvore(Arvore* arvore) {
-    if (arvore == NULL) {
+    if (arvore -> raiz == NULL)
+    {
         return NULL;
     }
 
@@ -277,7 +283,7 @@ else
         {
             printf("\nValor inserido inválido\n");
         }
-    } while (1);
+    } while (arvore->raiz =! NULL);
 }
 }
 
