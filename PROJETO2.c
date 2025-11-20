@@ -169,7 +169,7 @@ void estatisticas(Arvore *arvore)
 }
 
     else{
-        printf("Não ha venda registrada no momento");
+        printf("Nao ha venda registrada no momento");
     }
 
 }
