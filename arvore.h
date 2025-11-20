@@ -268,22 +268,19 @@ else
 {
 
     int opt;
-    do
-    {
-        printf("\nCrescente [1] ou Decrescente [2]?: ");
-        scanf("%d", &opt);
-        if (opt == 1 || opt == 2)
+    printf("\nCrescente [1] ou Decrescente [2]?: ");
+    scanf("%d", &opt);
+
+    if (opt == 1 || opt == 2)
          {
-            printf("\nID | Vendedor | Matrícula | Cliente | Data de Transação | Valor(R$)\n");
+            printf("\nID | Vendedor | Matrícula | Cliente | Data de Transacao | Valor(R$)\n");
             printf("-------------------------------------------------------------------\n");
             imprimearvoreOrder(arvore->raiz, opt);
-            break;
         }
     else
         {
             printf("\nValor inserido inválido\n");
         }
-    } while (arvore->raiz =! NULL);
 }
 }
 
