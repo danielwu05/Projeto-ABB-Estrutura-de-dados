@@ -34,9 +34,24 @@ NoArvore* inserirNovaVenda(Arvore* arvore)
     fgets(vendedor,51,stdin);
     vendedor[strcspn(vendedor,"\n")] = 0;
 
-    gerarMatricula(matricula);
-    printf("Matricula gerada : %s\n", matricula);
+    if(VaziaArvore(arvore))
 
+        {
+            gerarMatricula(matricula);
+        }
+    else
+    {
+        if(strcmp(arvore->raiz->info.vendedor,vendedor)==0)
+        {
+            strcpy(matricula,arvore->raiz->info.matricula);
+        }
+        else
+        {
+            gerarMatricula(matricula);
+        }
+    }
+
+    printf("Matricula gerada e:%s\n",matricula);
 
     printf("Digite a data (dia mes ano): ");
     scanf("%d %d %d", &data.dia, &data.mes, &data.ano);
