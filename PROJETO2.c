@@ -24,15 +24,13 @@ NoArvore* inserirNovaVenda(Arvore* arvore)
 
     printf("ID gerado: %d\n", id);
 
-    while (getchar() != '\n');
+     while (getchar() != '\n');
 
     printf("Digite o nome do Cliente: ");
-    fgets(cliente,51,stdin);
-    cliente[strcspn(cliente,"\n")] = 0;
+    gets(cliente);
 
     printf("Digite o nome do Vendedor: ");
-    fgets(vendedor,51,stdin);
-    vendedor[strcspn(vendedor,"\n")] = 0;
+    gets(vendedor);  
 
     if(VaziaArvore(arvore))
 
