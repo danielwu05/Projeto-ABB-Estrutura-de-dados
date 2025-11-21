@@ -28,11 +28,11 @@ NoArvore* inserirNovaVenda(Arvore* arvore)
 
     printf("Digite o nome do Cliente: ");
     fgets(cliente,51,stdin);
-    cliente[strcspn(cliente,"\n")] = 0;  // Remove newline
+    cliente[strcspn(cliente,"\n")] = 0;
 
     printf("Digite o nome do Vendedor: ");
     fgets(vendedor,51,stdin);
-    vendedor[strcspn(vendedor,"\n")] = 0;  // Remove newline
+    vendedor[strcspn(vendedor,"\n")] = 0;
 
     gerarMatricula(matricula);
     printf("Matricula gerada : %s\n", matricula);
@@ -156,6 +156,26 @@ else{
 }
 }
 
+void Venda_maior_menor(Arvore *arvore)
+{
+    if(arvore->raiz == NULL)
+    {
+        printf("Nao ha nenhuma venda registrada no momento");
+    }
+    else
+    {
+        float valor;
+        int opcao;
+
+        printf("Digite 1 para procurar valores mais caros ou 2 para valores mais baratos de vendas");
+        scanf("%d",&opcao);
+        printf("Digite o valor de referencia:");
+        scanf("%f",&valor);
+
+        imprimeAcimaouAbaixo(arvore->raiz,valor,opcao);
+    }
+}
+
 void estatisticas(Arvore *arvore)
 {
     if (!VaziaArvore(arvore))
@@ -168,7 +188,8 @@ void estatisticas(Arvore *arvore)
     printf("Faturamento total: R$ %.2f", faturamentoTotal); //Apenas fiz isso para garantir que o numero seja no formato pedido de 2 casas decimais
 }
 
-    else{
+    else
+    {
         printf("Nao ha venda registrada no momento");
     }
 
@@ -193,7 +214,7 @@ Arvore* removerVenda(Arvore*arvore)
     if (BuscarArvore(arvore->raiz, id))
     {
         printf("\nVenda removida!\n");
-        RemoveGalho(arvore->raiz, id);
+        arvore->raiz = RemoveGalho(arvore->raiz, id);
         return arvore;
 
     }
@@ -237,6 +258,7 @@ int main() {
                 menuBuscarVendedor(arvore);
                 break;
             case 4:
+                Venda_maior_menor(arvore);
                 break;
             case 5:
                 estatisticas(arvore);
