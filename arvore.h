@@ -53,8 +53,8 @@ int VaziaArvore(Arvore* arvore) {
 }
 
 void gerarMatricula(char* matricula) {
-    int num = rand() % 1000; // 0..999
-    snprintf(matricula, 5, "V%03d", num);
+    int num = rand() % 1000;
+    sprintf(matricula, "V%03d", num);
 }
 
 int generateRandomID()
@@ -201,6 +201,7 @@ if (root == NULL)
 
     return root;
 }
+
 
 void imprimeNo(NoArvore* no) {
     printf("%d | %s | %s | %s | %02d/%02d/%04d | R$ %.2f\n",no->info.id, no->info.vendedor, no->info.matricula,no->info.cliente, no->info.data.dia, no->info.data.mes,no->info.data.ano, no->info.valor);
