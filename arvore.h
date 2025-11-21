@@ -53,8 +53,8 @@ int VaziaArvore(Arvore* arvore) {
 }
 
 void gerarMatricula(char* matricula) {
-    int num = rand()%(999-100+1)+100;
-    sprintf(matricula,"V%3d",num);
+    int num = rand() % 1000; // 0..999
+    snprintf(matricula, 5, "V%03d", num);
 }
 
 int generateRandomID()
@@ -120,8 +120,7 @@ NoArvore* RemoveGalho(NoArvore* no, int achar) {
         }
         else {
             NoArvore* aux = encontraMaior(no->left);
-            no->info.id = aux->info.id;
-            no->info.data = aux->info.data;
+            no->info = aux->info;
             no->left = RemoveGalho(no->left, aux->info.id);
         }
     }
@@ -204,37 +203,39 @@ if (root == NULL)
 }
 
 void imprimeNo(NoArvore* no) {
-    printf("%d | %s | %s | %s | %02d/%02d/%d | R$ %.2f\n",no->info.id, no->info.vendedor, no->info.matricula,no->info.cliente, no->info.data.dia, no->info.data.mes,no->info.data.ano, no->info.valor);
+    printf("%d | %s | %s | %s | %02d/%02d/%04d | R$ %.2f\n",no->info.id, no->info.vendedor, no->info.matricula,no->info.cliente, no->info.data.dia, no->info.data.mes,no->info.data.ano, no->info.valor);
 }
 
 void imprimeVendas(NoArvore* no) {
-    printf("%d | %s | %02d/%02d/%d | R$ %.2f\n",
+    printf("%d | %s | %02d/%02d/%04d | R$ %.2f\n",
            no->info.id, no->info.cliente, no->info.data.dia,
            no->info.data.mes, no->info.data.ano, no->info.valor);
 }
 
 void imprimeAcimaouAbaixo(NoArvore* no, float valor, int o)
 {
+    if(no!= NULL)
+{
 
     imprimeAcimaouAbaixo(no->left, valor, o);
 
-    if (o == 1 && no->info.valor > valor) {
+    if (o == 1 && no->info.valor > valor)
+    {
         imprimeNo(no);
     }
-    else if (o == 2 && no->info.valor < valor) {
+    else if (o == 2 && no->info.valor < valor)
+    {
         imprimeNo(no);
     }
 
     imprimeAcimaouAbaixo(no->right, valor, o);
 }
+}
 
 void imprimearvoreOrder(NoArvore* no, int o)
 {
-    if(no == NULL)
-    {
-        printf("\n");
-    }
-    else{
+    if(no != NULL)
+{
 
     if (o == 1)
     {
@@ -274,7 +275,7 @@ else
         }
     else
         {
-            printf("\nValor inserido inválido\n");
+            printf("\nValor inserido invalido\n");
         }
 }
 }
