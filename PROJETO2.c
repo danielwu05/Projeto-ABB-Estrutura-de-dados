@@ -30,26 +30,24 @@ NoArvore* inserirNovaVenda(Arvore* arvore)
     gets(cliente);
 
     printf("Digite o nome do Vendedor: ");
-    gets(vendedor);  
+    gets(vendedor);
 
-    if(VaziaArvore(arvore))
+    if(VaziaArvore(arvore) || strcmp(arvore->raiz->info.vendedor,vendedor)!= 0 )
 
         {
             gerarMatricula(matricula);
+            printf("Matricula gerada e:%s\n",matricula);
         }
     else
     {
         if(strcmp(arvore->raiz->info.vendedor,vendedor)==0)
         {
             strcpy(matricula,arvore->raiz->info.matricula);
-        }
-        else
-        {
-            gerarMatricula(matricula);
+            printf("Vendedor ja registrado, matricula : %s\n", matricula);
         }
     }
 
-    printf("Matricula gerada e:%s\n",matricula);
+
 
     printf("Digite a data (dia mes ano): ");
     scanf("%d %d %d", &data.dia, &data.mes, &data.ano);
