@@ -46,10 +46,11 @@ Arvore* IniciaArvore() {
 
 
 int VaziaArvore(Arvore* arvore) {
-    if (arvore->raiz == NULL) {
-        return 1;
+    if (arvore->raiz == NULL)
+    {
+        return 0;
     }
-    return 0;
+    return 1;
 }
 
 void gerarMatricula(char* matricula) {
@@ -259,7 +260,7 @@ void imprimeArvore(Arvore* arvore)
 {
         if (arvore->raiz == NULL)
     {
-        printf("\n*** Nenhuma venda cadastrada ***\n");
+        printf("\n Nenhuma venda cadastrada\n");
     }
 else
 {
