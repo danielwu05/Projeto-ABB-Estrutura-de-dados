@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <ctype.h>
 
 
 NoArvore* inserirNovaVenda(Arvore* arvore)
@@ -32,7 +33,7 @@ NoArvore* inserirNovaVenda(Arvore* arvore)
     printf("Digite o nome do Vendedor: ");
     gets(vendedor);
 
-    if(VaziaArvore(arvore) || strcmp(arvore->raiz->info.vendedor,vendedor)!= 0 )
+    if((VaziaArvore(arvore)==0) || strcmp(arvore->raiz->info.vendedor,vendedor)!= 0 )
 
         {
             gerarMatricula(matricula);
@@ -84,13 +85,9 @@ void buscarVendasVendedor(NoArvore *no, char *busca, int porMatricula)
 
 
 void buscarPorMatricula(NoArvore *no, char *matricula)
- {
-     if(no == NULL)
-     {
-         printf("\n");
-     }
-     else
-    {
+{
+     if(no != NULL)
+{
         if (strcmp(no->info.matricula, matricula) == 0)
     {
         imprimeNo(no);
@@ -104,11 +101,7 @@ void buscarPorMatricula(NoArvore *no, char *matricula)
 
 void buscarPorNome(NoArvore *no, char *nome)
 {
-        if(no == NULL)
-     {
-         printf("\n");
-     }
-     else
+    if(no != NULL)
 {
     if (strcmp(no->info.vendedor, nome) == 0)
     {
@@ -124,7 +117,7 @@ void menuBuscarVendedor(Arvore *a)
     int opcao;
     char busca[51];
 
-    if (VaziaArvore(a))
+    if ((VaziaArvore(a))==0)
     {
         printf("\nNenhuma venda cadastrada!\n");
     }
@@ -142,8 +135,7 @@ else{
     if (opcao == 1)
     {
         printf("Digite a matricula (ex: V000): ");
-        fgets(busca, 51, stdin);
-        busca[strcspn(busca, "\n")] = 0;
+        gets(busca);
 
         printf("\n--- Vendas Encontradas ---\n");
         printf("ID | Vendedor | Matricula | Cliente | Data de Transacao | Valor(R$)\n");
@@ -153,10 +145,9 @@ else{
     else if (opcao == 2)
     {
         printf("Digite o nome do vendedor: ");
-        fgets(busca,51,stdin);
-        busca[strcspn(busca, "\n")] = 0;
+        gets(busca);
 
-        printf("\n--- Vendas Encontradas ---\n");
+        printf("\n Vendas Encontradas \n");
         printf("ID | Vendedor | Matricula | Cliente | Data de Transacao | Valor(R$)\n");
         printf("-------------------------------------------------------------------\n");
         buscarPorNome(a->raiz, busca);
@@ -178,7 +169,7 @@ void Venda_maior_menor(Arvore *arvore)
         float valor;
         int opcao;
 
-        printf("Digite 1 para procurar valores mais caros ou 2 para valores mais baratos de vendas");
+        printf("Digite 1 para procurar vendas maiores ou 2 para vendas menores ");
         scanf("%d",&opcao);
         printf("Digite o valor de referencia:");
         scanf("%f",&valor);
@@ -189,7 +180,7 @@ void Venda_maior_menor(Arvore *arvore)
 
 void estatisticas(Arvore *arvore)
 {
-    if (!VaziaArvore(arvore))
+    if (VaziaArvore(arvore)== 1)
 {
     int totalVendas = quantidadeNos(arvore->raiz, 0);
     float faturamentoTotal = somaValores(arvore->raiz);
@@ -211,12 +202,8 @@ Arvore* removerVenda(Arvore*arvore)
 {
     int id;
 
-    if (VaziaArvore(arvore))
+    if ((VaziaArvore(arvore))==1)
     {
-        printf("\nNenhuma venda cadastrada para remover.\n");
-        return NULL;
-    }
-
     printf("\n Remover Venda\n");
     printf("Digite o ID da venda a ser removida: ");
     scanf("%d", &id);
@@ -234,6 +221,13 @@ Arvore* removerVenda(Arvore*arvore)
         printf("Venda com ID %d nao encontrada!\n", id);
         return arvore;
     }
+    }
+
+else
+{
+        printf("\nNenhuma venda cadastrada para remover.\n");
+        return arvore;
+}
 }
 
 
