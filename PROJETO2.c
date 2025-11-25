@@ -33,19 +33,18 @@ NoArvore* inserirNovaVenda(Arvore* arvore)
     printf("Digite o nome do Vendedor: ");
     gets(vendedor);
 
-    if((VaziaArvore(arvore)==0) || strcmp(arvore->raiz->info.vendedor,vendedor)!= 0 )
 
+    int aconteceu = 0;
+    percorreArvore(arvore->raiz,vendedor,matricula,&aconteceu);
+
+    if(aconteceu==0)
         {
             gerarMatricula(matricula);
             printf("Matricula gerada e:%s\n",matricula);
         }
     else
     {
-        if(strcmp(arvore->raiz->info.vendedor,vendedor)==0)
-        {
-            strcpy(matricula,arvore->raiz->info.matricula);
             printf("Vendedor ja registrado, matricula : %s\n", matricula);
-        }
     }
 
 
@@ -76,7 +75,6 @@ void buscarVendasVendedor(NoArvore *no, char *busca, int porMatricula)
     buscarVendasVendedor(no->right, busca, porMatricula);
     buscarVendasVendedor(no->left, busca, porMatricula);
     }
-
     else
     {
         printf("Nao ha venda registrada");
@@ -130,7 +128,9 @@ else{
     printf("Escolha: ");
     scanf("%d", &opcao);
 
-    while (getchar() != '\n');
+    while (opcao != '\n' || opcao != EOF){
+        getchar();
+    }
 
     if (opcao == 1)
     {

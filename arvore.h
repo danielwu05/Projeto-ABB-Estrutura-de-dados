@@ -6,6 +6,8 @@
 #include <locale.h>
 #include <string.h>
 #include <time.h>
+#include <string.h>
+#include <ctype.h>
 
 
 typedef struct data {
@@ -43,7 +45,21 @@ Arvore* IniciaArvore() {
     return novaArvore;
 }
 
+void percorreArvore(NoArvore* arvore, char *a, char*matricula, int *aconteceu){
+    if (arvore != NULL){
 
+        if(strcasecmp(arvore->info.vendedor, a)==0){
+            strcpy(matricula, arvore->info.matricula);
+            *aconteceu = 1;
+        }
+        else{
+            *aconteceu = 0;
+        }
+        percorreArvore(arvore->left,a,matricula,aconteceu);
+        percorreArvore(arvore->right,a,matricula,aconteceu);
+    }
+
+}
 
 int VaziaArvore(Arvore* arvore) {
     if (arvore->raiz == NULL)
@@ -282,6 +298,10 @@ else
 }
 }
 
+int ProcuraNome(NoArvore* raiz, char *nome) {
+
+
+}
 
 
 float somaValores(NoArvore* raiz)
