@@ -160,7 +160,7 @@ else{
 
 void Venda_maior_menor(Arvore *arvore)
 {
-    if(arvore->raiz == NULL)
+    if(VaziaArvore(arvore)==0)
     {
         printf("Nao ha nenhuma venda registrada no momento");
     }
@@ -174,8 +174,12 @@ void Venda_maior_menor(Arvore *arvore)
         printf("Digite o valor de referencia:");
         scanf("%f",&valor);
 
+
+        printf("ID | Vendedor | Matricula | Cliente | Data de Transacao | Valor(R$)\n");
         imprimeAcimaouAbaixo(arvore->raiz,valor,opcao);
     }
+
+
 }
 
 void estatisticas(Arvore *arvore)
@@ -202,7 +206,7 @@ Arvore* removerVenda(Arvore*arvore)
 {
     int id;
 
-    if ((VaziaArvore(arvore))==1)
+    if ((VaziaArvore(arvore))== 1)
     {
     printf("\n Remover Venda\n");
     printf("Digite o ID da venda a ser removida: ");
@@ -269,7 +273,7 @@ int main() {
                 estatisticas(arvore);
                 break;
             case 6:
-                arvore = removerVenda(arvore);
+                removerVenda(arvore);
                 break;
             case 7:
                 RemoveArvore(arvore);
