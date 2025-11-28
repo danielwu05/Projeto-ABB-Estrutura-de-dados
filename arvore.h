@@ -1,3 +1,4 @@
+
 #ifndef ARVORE_H_INCLUDED
 #define ARVORE_H_INCLUDED
 
@@ -6,6 +7,8 @@
 #include <locale.h>
 #include <string.h>
 #include <time.h>
+#include <string.h>
+#include <ctype.h>
 
 
 typedef struct data {
@@ -43,7 +46,20 @@ Arvore* IniciaArvore() {
     return novaArvore;
 }
 
+void percorreArvore(NoArvore* arvore, char *vendedorBuscado, char* matricula, int *encontrou)
+{
+    if (arvore != NULL)
+{
+    if (strcasecmp(arvore->info.vendedor, vendedorBuscado) == 0 && *encontrou == 0)
+    {
+        strcpy(matricula, arvore->info.matricula);
+        *encontrou = 1;
+    }
 
+    percorreArvore(arvore->left, vendedorBuscado, matricula, encontrou);
+    percorreArvore(arvore->right, vendedorBuscado, matricula, encontrou);
+}
+}
 
 int VaziaArvore(Arvore* arvore) {
     if (arvore->raiz == NULL)
@@ -204,7 +220,8 @@ if (root == NULL)
 }
 
 
-void imprimeNo(NoArvore* no) {
+void imprimeNo(NoArvore* no)
+{
     printf("%d | %s | %s | %s | %02d/%02d/%04d | R$ %.2f\n",no->info.id, no->info.vendedor, no->info.matricula,no->info.cliente, no->info.data.dia, no->info.data.mes,no->info.data.ano, no->info.valor);
 }
 
