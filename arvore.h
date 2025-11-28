@@ -172,13 +172,12 @@ int quantidadeNos (NoArvore* no, int contagem) {
         if (no!=NULL)
         {
             contagem++;
-            if (no -> left == NULL && no -> right == NULL) {
-                return contagem;
-            }
-            if (no -> left != NULL) {
+            if (no -> left != NULL)
+            {
                 contagem = quantidadeNos(no -> left, contagem);
             }
-            if (no -> right != NULL) {
+            if (no -> right != NULL)
+            {
                 contagem = quantidadeNos(no -> right, contagem);
             }
         }
@@ -303,11 +302,16 @@ else
 
 float somaValores(NoArvore* raiz)
 {
+    int soma = 0;
     if (raiz == NULL)
     {
         return 0;
     }
-    return raiz->info.valor + somaValores(raiz->left) + somaValores(raiz->right); // fiz essa funçao de somar recursivamente ;
+    else
+{
+    soma= raiz->info.valor + somaValores(raiz->right) + somaValores(raiz->left);
+}
+    return soma;
 }
 
 
